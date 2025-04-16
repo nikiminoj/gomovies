@@ -31,6 +31,30 @@ export const posts = createTable(
   ],
 );
 
+export const movies = createTable("movie", (d) => ({
+  id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+  title: d.varchar({ length: 256 }).notNull(),
+  description: d.text(),
+  slug: d.varchar({ length: 256 }).notNull().unique(),
+  genre: d.varchar({ length: 100 }),
+  country: d.varchar({ length: 100 }),
+  imdbRating: d.numeric(),
+  duration: d.integer(), // Duration in minutes
+  releaseDate: d.date(),
+  cast: d.text(), // Store as JSON array of strings
+  productionCompany: d.varchar({ length: 256 }),
+  createdAt: d
+    .timestamp({ withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+}), (t) => ([
+  index("movie_title_idx").on(t.title),
+  index("movie_slug_idx").on(t.slug),
+  index("movie_genre_idx").on(t.genre),
+]));
+
+
 export const users = createTable("user", (d) => ({
   id: d
     .varchar({ length: 255 })
