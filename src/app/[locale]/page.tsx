@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { useState } from "react";
 
 // Dummy movie data (replace with actual API calls)
-const movies = [
+const initialMovies = [
   {
     id: 1,
     title: "The Shawshank Redemption",
@@ -23,19 +23,26 @@ const movies = [
   },
 ];
 
-export default async function HomePage({ params: { locale = "en" } }) {
+export default function HomePage({ params: { locale = "en" } }) {
   const t = useTranslations("HomePage");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [movies, setMovies] = useState([]); // Initialize as an empty array
 
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const handleSearch = () => {
+    // In a real app, make an API call here with the searchTerm
+    // For now, we'll filter the dummy data (replace with actual API call)
+    const filteredMovies = initialMovies.filter((movie) =>
+      movie.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+    setMovies(filteredMovies);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <header className="bg-gray-800 p-4">
         <h1 className="text-2xl font-bold">{t("title")}</h1>
+
         <input
           type="text"
           value={searchTerm}
@@ -43,13 +50,18 @@ export default async function HomePage({ params: { locale = "en" } }) {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mt-2 p-2 rounded bg-gray-700 text-white w-full"
         />
+
       </header>
 
       <main className="container mx-auto p-4">
         {selectedMovie ? (
           <MovieDetails movie={selectedMovie} onClose={() => setSelectedMovie(null)} />
         ) : (
-          <MovieList movies={filteredMovies} onSelectMovie={setSelectedMovie} />
+          <>
+            <button onClick={handleSearch} className="mt-2 p-2 rounded bg-blue-500 text-white">Search</button>
+
+            <MovieList movies={movies} onSelectMovie={setSelectedMovie} />
+          </>
         )}
       </main>
       <footer className="bg-gray-800 p-4 mt-8">

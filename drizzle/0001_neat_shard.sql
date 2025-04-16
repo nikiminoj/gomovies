@@ -1,0 +1,1 @@
+ALTER TABLE "gomovies_movie" ALTER COLUMN "releaseDate" SET DATA TYPE timestamp with time zone;

@@ -1,6 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import { index, pgTableCreator, primaryKey } from "drizzle-orm/pg-core";
-import { type AdapterAccount } from "next-auth/adapters";
+import { type AdapterAccount } from "next-auth";
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -38,9 +38,9 @@ export const movies = createTable("movie", (d) => ({
   slug: d.varchar({ length: 256 }).notNull().unique(),
   genre: d.varchar({ length: 100 }),
   country: d.varchar({ length: 100 }),
-  imdbRating: d.numeric(),
+  imdbRating: d.numeric().$type<number>(),
   duration: d.integer(), // Duration in minutes
-  releaseDate: d.date(),
+  releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   cast: d.text(), // Store as JSON array of strings
   productionCompany: d.varchar({ length: 256 }),
   createdAt: d
@@ -53,6 +53,8 @@ export const movies = createTable("movie", (d) => ({
   index("movie_slug_idx").on(t.slug),
   index("movie_genre_idx").on(t.genre),
 ]));
+
+export type DB_MovieType = typeof movies.$inferSelect;
 
 
 export const users = createTable("user", (d) => ({

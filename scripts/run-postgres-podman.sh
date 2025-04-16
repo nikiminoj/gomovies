@@ -48,4 +48,4 @@ podman run -d \
   postgres:latest
 
 echo "PostgreSQL container '$DB_CONTAINER_NAME' started successfully."
-echo "You can connect to the database using: postgresql://localhost:$DB_PORT/$DB_NAME"
+echo "You can connect to the database using: postgresql://$DB_USER:$DB_PASSWORD@localhost:$DB_PORT/$DB_NAME"
