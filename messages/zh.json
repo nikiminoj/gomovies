@@ -1,0 +1,25 @@
+{
+  "HomePage": {
+    "title": "电影",
+    "searchPlaceholder": "搜索电影",
+    "selectLanguage": "选择语言",
+    "footer": {
+      "faq": "常见问题",
+      "helpCenter": "帮助中心",
+      "account": "账号",
+      "mediaCenter": "媒体中心",
+      "investorRelations": "投资者关系",
+      "jobs": "工作机会",
+      "waysToWatch": "观看方式",
+      "termsOfUse": "使用条款",
+      "privacy": "隐私",
+      "cookiePreferences": "Cookie 偏好",
+      "corporateInformation": "公司信息",
+      "contactUs": "联系我们",
+      "speedTest": "速度测试",
+      "legalNotices": "法律声明",
+      "onlyOnNetflix": "仅在 Netflix 上",
+      "questions": "有疑问？请联系我们。"
+    }
+  }
+}

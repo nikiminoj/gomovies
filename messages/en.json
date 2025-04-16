@@ -1,0 +1,27 @@
+{
+  "HomePage": {
+    "title": "GoMovies - Watch Online",
+    "searchPlaceholder": "Search for movies...",
+    "selectLanguage": "Select Language",
+    "language": "English",
+    "netflixTaiwan": "Netflix Taiwan",
+    "footer": {
+      "faq": "FAQ",
+      "helpCenter": "Help Center",
+      "account": "Account",
+      "mediaCenter": "Media Center",
+      "investorRelations": "Investor Relations",
+      "jobs": "Jobs",
+      "waysToWatch": "Ways to Watch",
+      "termsOfUse": "Terms of Use",
+      "privacy": "Privacy",
+      "cookiePreferences": "Cookie Preferences",
+      "corporateInformation": "Corporate Information",
+      "contactUs": "Contact Us",
+      "speedTest": "Speed Test",
+      "legalNotices": "Legal Notices",
+      "onlyOnNetflix": "Only on Netflix",
+      "questions": "Questions? Contact us."
+    }
+  }
+}
