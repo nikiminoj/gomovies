@@ -19,13 +19,18 @@
     "start": "next start",
     "podman:up": "./scripts/run-postgres-podman.sh",
     "typecheck": "tsc --noEmit",
-    "db:seed": "dotenv -e .env npx tsx drizzle/seeds/seed.ts"
+    "db:seed": "dotenv -e .env npx tsx drizzle/seeds/seed.ts",
+    "drizzle:console": "tsx scripts/drizzle-console.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.2",
+    "@radix-ui/react-slot": "^1.2.0",
     "@t3-oss/env-nextjs": "^0.12.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "drizzle-orm": "^0.41.0",
     "drizzle-seed": "^0.3.1",
+    "lucide-react": "^0.488.0",
     "next": "^15.2.3",
     "next-auth": "5.0.0-beta.25",
     "next-intl": "^4.0.2",
@@ -33,6 +38,8 @@
     "postgres": "^3.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.2.0",
+    "tw-animate-css": "^1.2.5",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -52,7 +59,8 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.15",
     "tsc": "^2.0.4",
-    "typescript": "^5.8.3",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4",
     "typescript-eslint": "^8.27.0"
   },
   "ct3aMetadata": {
