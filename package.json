@@ -20,7 +20,8 @@
     "podman:up": "./scripts/run-postgres-podman.sh",
     "typecheck": "tsc --noEmit",
     "db:seed": "dotenv -e .env npx tsx drizzle/seeds/seed.ts",
-    "drizzle:console": "tsx scripts/drizzle-console.ts"
+    "drizzle:console": "tsx scripts/drizzle-console.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.7.2",
@@ -48,6 +49,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.0.15",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.14.10",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -57,10 +59,13 @@
     "eslint": "^9.23.0",
     "eslint-config-next": "^15.2.3",
     "eslint-plugin-drizzle": "^0.2.3",
+    "jest": "^29.7.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4.0.15",
+    "ts-jest": "^29.3.2",
+    "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
     "tsx": "^4.16.2",
     "typescript": "^5.5.4",
