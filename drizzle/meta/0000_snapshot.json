@@ -1,5 +1,5 @@
 {
-  "id": "c158e18e-c32f-4b2e-9338-dc0e00f5c85e",
+  "id": "1b3881f6-3d7a-4855-bb0e-d847ef804fef",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -127,20 +127,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "gomovies_movie_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
+          "notNull": true
         },
         "title": {
           "name": "title",
@@ -186,7 +175,7 @@
         },
         "releaseDate": {
           "name": "releaseDate",
-          "type": "date",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
@@ -199,6 +188,12 @@
         "productionCompany": {
           "name": "productionCompany",
           "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "serieId": {
+          "name": "serieId",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
@@ -263,7 +258,21 @@
           "with": {}
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "gomovies_movie_serieId_gomovies_serie_id_fk": {
+          "name": "gomovies_movie_serieId_gomovies_serie_id_fk",
+          "tableFrom": "gomovies_movie",
+          "tableTo": "gomovies_serie",
+          "columnsFrom": [
+            "serieId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "gomovies_movie_slug_unique": {
@@ -284,20 +293,9 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "byDefault",
-            "name": "gomovies_post_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
+          "notNull": true
         },
         "name": {
           "name": "name",
@@ -378,6 +376,37 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.gomovies_serie": {
+      "name": "gomovies_serie",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(255)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.gomovies_session": {
       "name": "gomovies_session",
       "schema": "",
@@ -452,6 +481,12 @@
         "name": {
           "name": "name",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "varchar(250)",
           "primaryKey": false,
           "notNull": false
         },
