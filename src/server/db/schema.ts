@@ -13,7 +13,11 @@ export const createTable = pgTableCreator((name) => `gomovies_${name}`);
 export const posts = createTable(
   "post",
   (d) => ({
-    id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+    id: d
+    .varchar({ length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
     name: d.varchar({ length: 256 }),
     createdById: d
       .varchar({ length: 255 })
@@ -31,18 +35,32 @@ export const posts = createTable(
   ],
 );
 
+export const series = createTable("serie", (d) => ({
+  id: d
+  .varchar({ length: 255 })
+  .notNull()
+  .primaryKey()
+  .$defaultFn(() => crypto.randomUUID()),
+  name: d.varchar("name", { length: 255 }).notNull(),
+  description: d.varchar("description", { length: 500 }),
+}));
+
 export const movies = createTable("movie", (d) => ({
-  id: d.integer().primaryKey().generatedByDefaultAsIdentity(),
+  id: d.varchar({ length: 255 })
+  .notNull()
+  .primaryKey()
+  .$defaultFn(() => crypto.randomUUID()),
   title: d.varchar({ length: 256 }).notNull(),
   description: d.text(),
   slug: d.varchar({ length: 256 }).notNull().unique(),
   genre: d.varchar({ length: 100 }),
   country: d.varchar({ length: 100 }),
   imdbRating: d.numeric().$type<number>(),
-  duration: d.integer(), // Duration in minutes
+  duration: d.integer(),
   releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
-  cast: d.text(), // Store as JSON array of strings
+  cast: d.text(),
   productionCompany: d.varchar({ length: 256 }),
+  serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }).$type<number>(),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -54,8 +72,6 @@ export const movies = createTable("movie", (d) => ({
   index("movie_genre_idx").on(t.genre),
 ]));
 
-export type DB_MovieType = typeof movies.$inferSelect;
-
 
 export const users = createTable("user", (d) => ({
   id: d
@@ -64,6 +80,7 @@ export const users = createTable("user", (d) => ({
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: d.varchar({ length: 255 }),
+  role: d.varchar({length: 250}),
   email: d.varchar({ length: 255 }).notNull(),
   emailVerified: d
     .timestamp({
@@ -72,10 +89,6 @@ export const users = createTable("user", (d) => ({
     })
     .default(sql`CURRENT_TIMESTAMP`),
   image: d.varchar({ length: 255 }),
-}));
-
-export const usersRelations = relations(users, ({ many }) => ({
-  accounts: many(accounts),
 }));
 
 export const accounts = createTable(
@@ -102,10 +115,6 @@ export const accounts = createTable(
   ],
 );
 
-export const accountsRelations = relations(accounts, ({ one }) => ({
-  user: one(users, { fields: [accounts.userId], references: [users.id] }),
-}));
-
 export const sessions = createTable(
   "session",
   (d) => ({
@@ -119,9 +128,10 @@ export const sessions = createTable(
   (t) => [index("t_user_id_idx").on(t.userId)],
 );
 
-export const sessionsRelations = relations(sessions, ({ one }) => ({
-  user: one(users, { fields: [sessions.userId], references: [users.id] }),
-}));
+export type DB_SerieType = typeof series.$inferSelect;
+export type DB_MovieType = typeof movies.$inferSelect;
+export type DB_AccountType = typeof accounts.$inferSelect;
+export type DB_UserType = typeof users.$inferSelect;
 
 export const verificationTokens = createTable(
   "verification_token",
@@ -132,3 +142,23 @@ export const verificationTokens = createTable(
   }),
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
 );
+
+export const moviessRelations = relations(movies, ({ one }) => ({
+  user: one(series, { fields: [movies.serieId], references: [series.id] }),
+}));
+
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  user: one(users, { fields: [accounts.userId], references: [users.id] }),
+}));
+
+export const usersRelations = relations(users, ({ many }) => ({
+  accounts: many(accounts),
+}));
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, { fields: [sessions.userId], references: [users.id] }),
+}));
+
+export const seriesRelations = relations(series, ({ many }) => ({
+  movies: many(movies),
+}));

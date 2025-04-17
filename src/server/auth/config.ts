@@ -1,6 +1,7 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import EmailProvider from "next-auth/providers/nodemailer";
+import { env } from "@/env";
 
 import { db } from "@/server/db";
 import {
@@ -21,14 +22,16 @@ declare module "next-auth" {
     user: {
       id: string;
       // ...other properties
-      // role: UserRole;
+      role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
+  interface User {
   //   // ...other properties
-  //   // role: UserRole;
-  // }
+    role: UserRole;
+  }
+
+  type UserRole = "admin" | "user";
 }
 
 /**
