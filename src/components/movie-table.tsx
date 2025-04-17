@@ -3,6 +3,27 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { QUERIES } from "@/server/db/queries"
 import { MoreHorizontal } from "lucide-react"
 
+const getRatingColor = (imdbRating: number | null) => {
+    const rating = imdbRating ? Math.round(imdbRating * 10) : 0;
+      const scaledRating = Math.min(Math.max(rating, 0), 10);
+      const ratingColors: Record<number, string> = {
+        0: "text-red-500",
+        1: "text-red-500",
+        2: "text-red-400",
+        3: "text-red-400",
+        4: "text-red-300",
+        5: "text-red-300",
+        6: "text-green-300",
+        7: "text-green-300",
+        8: "text-green-400",
+        9: "text-green-400",
+        10: "text-green-500",
+      };
+      return ratingColors[scaledRating];
+};
+
+
+
 export async function MovieTable() {
     const movies = await QUERIES.getMoviesWithSeries();
     return (
@@ -27,37 +48,14 @@ export async function MovieTable() {
                                 <Avatar className="h-6 w-6">
                                     <img src={`/placeholder.svg?height=24&width=24`} alt={movie.title} />
                                 </Avatar>
-                                <div>
-                                    <div className="font-medium">{movie.title}</div>
-                                    <div className="text-xs text-muted-foreground">{movie.title}</div>
-                                </div>
                             </div>
                         </TableCell>
                         <TableCell className="text-green-500">{movie.title}</TableCell>
-                        <TableCell>{movie.title}</TableCell>
-                        <TableCell>{movie.title}</TableCell>
-                        <TableCell>
-                            <span
-                                className={`inline-flex items-center rounded-full px-2 py-1 text-xs ${movie.title === "Fixed" ? "bg-yellow-500/10 text-yellow-500" : "bg-green-500/10 text-green-500"
-                                    }`}
-                            >
-                                {movie.title}
-                            </span>
-                        </TableCell>
-                        <TableCell>{movie.title}</TableCell>
-                        <TableCell>
-                            <div className="flex gap-1">
-                                {Array.from({ length: 3 }).map((_, i) => (
-                                    <div
-                                        key={i}
-                                        className={`h-1.5 w-3 rounded-full ${i < (movie.title === "high" ? 3 : movie.title === "medium" ? 2 : 1)
-                                                ? "bg-primary"
-                                                : "bg-muted"
-                                            }`}
-                                    />
-                                ))}
-                            </div>
-                        </TableCell>
+                        <TableCell>{movie.serieId ? "Episodes" : "Movie"}</TableCell>
+                        <TableCell className={getRatingColor(movie.imdbRating)}>{movie.imdbRating}</TableCell>
+                        <TableCell>{movie.duration}</TableCell>
+                        <TableCell>{movie.genre}</TableCell>
+                        <TableCell>{movie.country}</TableCell>
                         <TableCell>
                             <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                         </TableCell>

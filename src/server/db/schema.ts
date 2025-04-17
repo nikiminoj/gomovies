@@ -43,6 +43,11 @@ export const series = createTable("serie", (d) => ({
   .$defaultFn(() => crypto.randomUUID()),
   name: d.varchar("name", { length: 255 }).notNull(),
   description: d.varchar("description", { length: 500 }),
+  createdAt: d
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
 }));
 
 export const movies = createTable("movie", (d) => ({
@@ -60,7 +65,7 @@ export const movies = createTable("movie", (d) => ({
   releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   cast: d.text(),
   productionCompany: d.varchar({ length: 256 }),
-  serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }).$type<number>(),
+  serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -143,8 +148,8 @@ export const verificationTokens = createTable(
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
 );
 
-export const moviessRelations = relations(movies, ({ one }) => ({
-  user: one(series, { fields: [movies.serieId], references: [series.id] }),
+export const moviesRelations = relations(movies, ({ one }) => ({
+  serie: one(series, { fields: [movies.serieId], references: [series.id] }),
 }));
 
 export const accountsRelations = relations(accounts, ({ one }) => ({
