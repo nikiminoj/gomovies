@@ -12,8 +12,9 @@ import { Link } from "@/i18n/navigation";
 export default function HomePage() {
 
   return (
-    <main className="container mx-auto p-4">
-    </main>
-
+    <>
+      <main className="container mx-auto p-4">
+      </main>
+    </>
   );
 }
