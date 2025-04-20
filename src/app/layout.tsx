@@ -1,7 +1,9 @@
 import "@/styles/globals.css";
-
-import { type Metadata } from "next";
+import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
+import QueryProvider from "@/components/QueryProvider";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Movie Discovery",
@@ -16,10 +18,18 @@ const geist = Geist({
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: { children: React.ReactNode }) {
+
   return (
-    <html lang="en" className={`${geist.variable}`}>
-      <body>{children}</body>
-    </html>
+    <SessionProvider>
+      <html lang="en" className={`${geist.variable}`}>
+        <body>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+          <ToastContainer />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }

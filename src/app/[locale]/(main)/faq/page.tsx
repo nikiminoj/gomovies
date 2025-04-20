@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
   Accordion,
   AccordionContent,
@@ -8,44 +8,36 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-interface FAQItem {
+interface QuestionItem {
   question: string;
   answer: string;
 }
 
+interface FAQCategory {
+  category: string;
+  questions: QuestionItem[];
+}
+
+const fetchFaqs = async (): Promise<FAQCategory[]> => {
+  const response = await fetch('/api/faqs');
+  if (!response.ok) {
+    throw new Error('Failed to fetch FAQs');
+  }
+  return response.json();
+};
+
+
+
+
 const FaqPage = () => {
-  const [faqs, setFaqs] = useState<FAQItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchFaqs = async () => {
-      try {
-        setLoading(true);
-        // Replace this with your actual API call or data fetching logic
-        const response = await fetch('/api/faqs'); // Assuming you have an API endpoint
-        if (!response.ok) {
-          throw new Error('Failed to fetch FAQs');
-        }
-        const data: FAQItem[] = await response.json();
-        setFaqs(data);
-      } catch (err: any) {
-        setError(err.message || 'An error occurred while fetching FAQs');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFaqs();
-  }, []);
-
-  if (loading) {
-    return <p>Loading FAQs...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  const {
+    data: faqs,
+    isLoading,
+    error,
+  } = useQuery<FAQCategory[], Error>({
+    queryKey: ['faqs-with-categories'],
+    queryFn: fetchFaqs,
+  });
 
   return (
     <div className="container mx-auto py-12">
@@ -56,17 +48,31 @@ const FaqPage = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {faqs.length > 0 ? (
+          {isLoading ? (
+            <p>Loading FAQs...</p>
+          ) : error ? (
+            <p>Error: {error.message}</p>
+          ) : !faqs || faqs.length === 0 ? (
+            <p>No FAQs available at the moment.</p>
+          ) : (
             <Accordion type="single" collapsible className="w-full">
-              {faqs.map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`}>
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>{faq.answer}</AccordionContent>
-                </AccordionItem>
+              {faqs.map((category, catIndex) => (
+                <div key={catIndex}>
+                  <h2 className="text-2xl font-semibold mt-6 mb-2">{category.category}</h2>
+                  {category.questions.map((faq, faqIndex) => (
+                    <AccordionItem
+                      key={`${catIndex}-${faqIndex}`}
+                      value={`${catIndex}-${faqIndex}`}
+                    >
+                      <AccordionTrigger>{faq.question}</AccordionTrigger>
+                      <AccordionContent>
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </div>
               ))}
             </Accordion>
-          ) : (
-            <p>No FAQs available at the moment.</p>
           )}
         </CardContent>
       </Card>

@@ -19,19 +19,12 @@ export function Footer() {
                 {t("footer.faq")}
               </Link>
             </li>
-            <li>
-              <Link href="/accounts" className={cn("text-muted-foreground hover:text-foreground")}>
-                {t("footer.account")}
-              </Link>
-            </li>
             <li><Link href="/privacy" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.privacy")}</Link></li>
             <li><Link href="/terms" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.termsOfUse")}</Link></li>
             <li><a href="#">{t("footer.account")}</a></li>
             <li><a href="#">{t("footer.mediaCenter")}</a></li>
           </ul>
           <ul>
-            <li><a href="#">{t("footer.investorRelations")}</a></li>
-            <li><a href="#">{t("footer.jobs")}</a></li>
             <li><a href="#">{t("footer.waysToWatch")}</a></li>
           </ul>
           <ul>
@@ -42,7 +35,6 @@ export function Footer() {
           <ul>
             <li><a href="#">{t("footer.speedTest")}</a></li>
             <li><a href="#">{t("footer.legalNotices")}</a></li>
-            <li><a href="#">{t("footer.onlyOnNetflix")}</a></li>
           </ul>
         </div>
       </div>
