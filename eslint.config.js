@@ -2,6 +2,8 @@ import { FlatCompat } from "@eslint/eslintrc";
 import tseslint from "typescript-eslint";
 // @ts-ignore -- no types for this plugin
 import drizzle from "eslint-plugin-drizzle";
+import pluginQuery from '@tanstack/eslint-plugin-query'
+
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -46,6 +48,14 @@ export default tseslint.config(
         "error",
         { drizzleObjectName: ["db", "ctx.db"] },
       ],
+    },
+  },
+  {
+    plugins: {
+      '@tanstack/query': pluginQuery,
+    },
+    rules: {
+      '@tanstack/query/exhaustive-deps': 'error',
     },
   },
   {
