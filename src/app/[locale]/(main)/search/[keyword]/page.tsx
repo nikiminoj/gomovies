@@ -1,6 +1,6 @@
 import { db } from "@/server/db";
 import { movies } from "@/server/db/schema";
-import MovieCard from "@/components/MovieCard";
+import MovieCard from "@/components/movie-card";
 import { ilike, eq } from "drizzle-orm";
 interface Props {
   params: { keyword: string };

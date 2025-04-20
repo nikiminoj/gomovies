@@ -43,6 +43,7 @@ export const series = createTable("serie", (d) => ({
   .$defaultFn(() => crypto.randomUUID()),
   name: d.varchar("name", { length: 255 }).notNull(),
   description: d.varchar("description", { length: 500 }),
+  releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   createdAt: d
       .timestamp({ withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)

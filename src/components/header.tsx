@@ -8,12 +8,6 @@ import { Input } from "./ui/input";
 
 export function Header() {
     const t = useTranslations("HomePage");
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const router = useRouter();
-    const handleSearch = () => {
-        router.push(`/search/${searchTerm}`);
-    };
 
     return (
         <header className="bg-gray-800 p-4">
@@ -28,14 +22,6 @@ export function Header() {
                     Series
                 </Link>
             </Button>
-            <Input
-                type="text"
-                value={searchTerm}
-                onSubmit={handleSearch}
-                placeholder={t("searchPlaceholder")}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="mt-2 p-2 rounded bg-gray-700 text-white w-full"
-            />
         </header>
     )
 }
