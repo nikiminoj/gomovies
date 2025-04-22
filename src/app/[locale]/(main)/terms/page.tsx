@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import * as motion from "motion/react-client";
 import { TypographyH1 } from "@/components/ui/typography";
 
 export default function TermsOfUsePage() {
