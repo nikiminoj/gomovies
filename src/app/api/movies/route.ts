@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/server/db";
 import { movies } from "@/server/db/schema";
-import { like, eq } from "drizzle-orm";
+import { and, like, eq, isNull } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,12 +13,12 @@ export async function GET(req: NextRequest) {
       const searchedMovies = await db
         .select()
         .from(movies)
-        .where(like(movies.title, `%${query}%`))
+        .where(and(like(movies.title, `%${query}%`), isNull(movies.serieId)))
         .limit(limit)
         .offset(offset);
       return NextResponse.json(searchedMovies);
     } else {
-      const allMovies = await db.select().from(movies).limit(limit).offset(offset);
+      const allMovies = await db.select().from(movies).where(isNull(movies.serieId)).limit(limit).offset(offset);
       return NextResponse.json(allMovies);
     }
   } catch (error) {
