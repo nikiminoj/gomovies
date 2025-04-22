@@ -41,15 +41,18 @@ export const series = createTable("serie", (d) => ({
   .notNull()
   .primaryKey()
   .$defaultFn(() => crypto.randomUUID()),
-  name: d.varchar("name", { length: 255 }).notNull(),
-  description: d.varchar("description", { length: 500 }),
+  title: d.varchar({ length: 255 }).notNull(),
+  description: d.varchar({ length: 500 }),
   releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   createdAt: d
       .timestamp({ withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
-}));
+}), (t) => ([
+  index("serie_title_idx").on(t.title),
+  index("serie_release_date_idx").on(t.releaseDate),
+]));
 
 export const movies = createTable("movie", (d) => ({
   id: d.varchar({ length: 255 })
@@ -75,6 +78,8 @@ export const movies = createTable("movie", (d) => ({
 }), (t) => ([
   index("movie_title_idx").on(t.title),
   index("movie_slug_idx").on(t.slug),
+  index("movie_imdb_rating_idx").on(t.imdbRating),
+  index("movie_release_date_idx").on(t.releaseDate),
   index("movie_genre_idx").on(t.genre),
 ]));
 
@@ -131,7 +136,7 @@ export const sessions = createTable(
       .references(() => users.id),
     expires: d.timestamp({ mode: "date", withTimezone: true }).notNull(),
   }),
-  (t) => [index("t_user_id_idx").on(t.userId)],
+  (t) => [index("session_user_id_idx").on(t.userId)],
 );
 
 export type DB_SerieType = typeof series.$inferSelect;
