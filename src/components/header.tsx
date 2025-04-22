@@ -19,7 +19,7 @@ export function Header() {
                     </Link>
                 </Button>
                 <Button asChild variant="ghost">
-                    <Link href="/series">
+                    <Link href="/serie">
                         Series
                     </Link>
                 </Button>
