@@ -51,7 +51,7 @@ export default function HomePage() {
             placeholder={t("searchPlaceholder")}
             onChange={(e) => setSearchTerm(e.target.value)}
             ref={inputRef}
-            className="mt-2 p-2 rounded bg-gray-700 text-white w-full relative"
+            className="mt-2 p-2 rounded w-full relative"
           />
 
           <Label

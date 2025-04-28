@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { TypographyH2, TypographyH4 } from '@/components/ui/typography';
 
 interface QuestionItem {
   question: string;
@@ -26,9 +27,6 @@ const fetchFaqs = async (): Promise<FAQCategory[]> => {
   return response.json();
 };
 
-
-
-
 const FaqPage = () => {
   const {
     data: faqs,
@@ -41,41 +39,35 @@ const FaqPage = () => {
 
   return (
     <div className="container mx-auto py-12">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center">
-            Frequently Asked Questions
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <p>Loading FAQs...</p>
-          ) : error ? (
-            <p>Error: {error.message}</p>
-          ) : !faqs || faqs.length === 0 ? (
-            <p>No FAQs available at the moment.</p>
-          ) : (
-            <Accordion type="single" collapsible className="w-full">
-              {faqs.map((category, catIndex) => (
-                <div key={catIndex}>
-                  <h2 className="text-2xl font-semibold mt-6 mb-2">{category.category}</h2>
-                  {category.questions.map((faq, faqIndex) => (
-                    <AccordionItem
-                      key={`${catIndex}-${faqIndex}`}
-                      value={`${catIndex}-${faqIndex}`}
-                    >
-                      <AccordionTrigger>{faq.question}</AccordionTrigger>
-                      <AccordionContent>
-                        {faq.answer}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </div>
+      <TypographyH4>
+        Frequently Asked Questions
+      </TypographyH4>
+      {isLoading ? (
+        <p>Loading FAQs...</p>
+      ) : error ? (
+        <p>Error: {error.message}</p>
+      ) : !faqs || faqs.length === 0 ? (
+        <p>No FAQs available at the moment.</p>
+      ) : (
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((category, catIndex) => (
+            <div key={catIndex}>
+              <TypographyH4>{category.category}</TypographyH4>
+              {category.questions.map((faq, faqIndex) => (
+                <AccordionItem
+                  key={`${catIndex}-${faqIndex}`}
+                  value={`${catIndex}-${faqIndex}`}
+                >
+                  <AccordionTrigger>{faq.question}</AccordionTrigger>
+                  <AccordionContent>
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </Accordion>
-          )}
-        </CardContent>
-      </Card>
+            </div>
+          ))}
+        </Accordion>
+      )}
     </div>
   );
 };
