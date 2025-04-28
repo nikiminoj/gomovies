@@ -29,8 +29,10 @@ export function Header() {
             <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
                     <>
-                        <Button variant="ghost" size="icon">
-                            <Bell className="h-5 w-5" />
+                        <Button variant="ghost" size="icon" asChild>
+                            <Link href="/notifications">
+                                <Bell className="h-5 w-5" />
+                            </Link>
                         </Button>
                         <Button asChild variant="secondary">
                             <Link href="/account" className="flex items-center">
