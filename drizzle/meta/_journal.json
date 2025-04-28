@@ -8,6 +8,13 @@
       "when": 1744896351877,
       "tag": "0000_clammy_killmonger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1745853374347,
+      "tag": "0001_luxuriant_boomerang",
+      "breakpoints": true
     }
   ]
 }

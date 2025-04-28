@@ -139,10 +139,28 @@ export const sessions = createTable(
   (t) => [index("session_user_id_idx").on(t.userId)],
 );
 
-export type DB_SerieType = typeof series.$inferSelect;
-export type DB_MovieType = typeof movies.$inferSelect;
-export type DB_AccountType = typeof accounts.$inferSelect;
-export type DB_UserType = typeof users.$inferSelect;
+export const notifications = createTable(
+  "notification",
+  (t) => ({
+    id: t.varchar({ length: 255 }).notNull().primaryKey().$defaultFn(() => crypto.randomUUID()),
+    recipientType: t.varchar({ length: 255 }).notNull(),
+    recipientId: t
+      .varchar({ length: 255 })
+      .notNull(),
+    type: t.varchar({ length: 255 }).notNull(),
+    params: t.json(),
+    readAt: t.timestamp({ withTimezone: true }),
+    createdAt: t
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: t.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+  }),
+  (t) => [
+    index("notifications_read_at_idx").on(t.readAt),
+    index("notifications_recipient_idx").on(t.recipientType, t.recipientId),
+  ],
+);
 
 export const verificationTokens = createTable(
   "verification_token",
@@ -153,6 +171,14 @@ export const verificationTokens = createTable(
   }),
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
 );
+
+export type DB_NotificationType = typeof notifications.$inferSelect;
+export type DB_SerieType = typeof series.$inferSelect;
+export type DB_MovieType = typeof movies.$inferSelect;
+export type DB_AccountType = typeof accounts.$inferSelect;
+export type DB_UserType = typeof users.$inferSelect;
+export type DB_SessionType = typeof sessions.$inferSelect;
+export type DB_VerificationTokenType = typeof verificationTokens.$inferSelect;
 
 export const moviesRelations = relations(movies, ({ one }) => ({
   serie: one(series, { fields: [movies.serieId], references: [series.id] }),
