@@ -5,9 +5,6 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Link } from 'lucide-react';
 
 export default async function Layout({
     children,
@@ -26,7 +23,7 @@ export default async function Layout({
         <html lang={locale}>
             <body>
                 <NextIntlClientProvider>
-                    <div className="min-h-screen bg-gray-900 text-white">
+                    <div className="min-h-screen">
                         <Header />
                         {children}
                         <Footer />
