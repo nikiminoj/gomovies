@@ -2,34 +2,65 @@
 
 import { useTranslations, NextIntlClientProvider } from "next-intl";
 import { notFound } from 'next/navigation';
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
+import { Label } from "@/components/ui/label";
 import { Link } from "@/i18n/navigation";
+import { useOs } from "@/lib/utils";
 
 export default function HomePage() {
   const t = useTranslations("HomePage");
 
   const [searchTerm, setSearchTerm] = useState("");
 
+  const os = useOs();
   const router = useRouter();
+  
   const handleSearch = () => {
     router.push(`/search/${searchTerm}`);
   };
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+        event.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  });
+
   return (
     <>
-      <main className="container mx-auto p-4">
-        <Input
-          type="text"
-          value={searchTerm}
-          onSubmit={handleSearch}
-          placeholder={t("searchPlaceholder")}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="mt-2 p-2 rounded bg-gray-700 text-white w-full"
-        />
+      <main className="container mx-auto p-4 relative">
+        <div className="relative">
+          <Input
+            type="text"
+            value={searchTerm}
+            onSubmit={handleSearch}
+            placeholder={t("searchPlaceholder")}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            ref={inputRef}
+            className="mt-2 p-2 rounded bg-gray-700 text-white w-full relative"
+          />
+
+          <Label
+            htmlFor="search"
+            className="absolute top-3 right-3 text-muted-foreground text-xs pointer-events-none"
+          >
+            {os === "mac" ? "⌘ k" : "ctrl + k"}
+          </Label>
+        </div>
       </main>
     </>
   );
