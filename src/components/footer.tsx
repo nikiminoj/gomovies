@@ -9,7 +9,7 @@ export function Footer() {
   const t = useTranslations("HomePage");
 
   return (
-    <footer className="bg-gray-800 p-4 mt-8">
+    <footer className="p-4 mt-8">
       <div className="container mx-auto">
         <p className="text-gray-400">{t("footer.questions")}</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-gray-400">
