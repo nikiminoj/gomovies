@@ -4,6 +4,7 @@ import { Geist } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import QueryProvider from "@/components/QueryProvider";
 import { ToastContainer } from "react-toastify";
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "Movie Discovery",
@@ -28,6 +29,7 @@ export default function RootLayout({
             {children}
           </QueryProvider>
           <ToastContainer />
+          <Toaster />
         </body>
       </html>
     </SessionProvider>
