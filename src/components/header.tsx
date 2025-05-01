@@ -35,7 +35,7 @@ export function Header() {
                             </Link>
                         </Button>
                         <Button asChild variant="secondary">
-                            <Link href="/account" className="flex items-center">
+                            <Link href="/settings" className="flex items-center">
                                 <User className="h-4 w-4 mr-2" />
                                 Account
                             </Link>

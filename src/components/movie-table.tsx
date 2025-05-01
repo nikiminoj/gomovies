@@ -1,7 +1,10 @@
+"use client"
+
 import { Avatar } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { QUERIES } from "@/server/db/queries"
 import { MoreHorizontal } from "lucide-react"
+import { useQuery } from "@tanstack/react-query";
+import { type DB_MovieType } from "@/server/db/schema";
 
 const getRatingColor = (imdbRating: number | null) => {
     const rating = imdbRating ? Math.round(imdbRating * 10) : 0;
@@ -22,11 +25,21 @@ const getRatingColor = (imdbRating: number | null) => {
       return ratingColors[scaledRating];
 };
 
+const fetchMovies = async () => {
+    const response = await fetch('/api/movies');
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    return response.json();
+};
 
 
-export async function MovieTable() {
-    const movies = await QUERIES.getMoviesWithSeries();
-    return (
+export function MovieTable() {
+    const { isLoading, error, data: movies } = useQuery<{ movies: DB_MovieType[] }, Error>({ queryKey: ['movies'], queryFn: fetchMovies });;
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+
+    return movies && (
         <Table>
             <TableHeader>
                 <TableRow>
@@ -41,7 +54,7 @@ export async function MovieTable() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {movies.map((movie) => (
+                {movies?.map((movie) => (
                     <TableRow key={movie.id}>
                         <TableCell className="font-medium">
                             <div className="flex items-center gap-2">

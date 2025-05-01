@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     if (!emailRegex.test(newEmail)) {
       return NextResponse.json({ message: 'Invalid email format' }, { status: 400 });
     }
-    
+
     const [user] = await db.select().from(users).where(eq(users.email, session.user.email));
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });

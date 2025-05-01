@@ -1,7 +1,8 @@
 import "server-only";
 import { db } from "./index";
-import { movies, series } from "./schema";
+import { movies, series, users } from "./schema";
 import { eq, isNull, count, isNotNull, asc, desc } from "drizzle-orm";
+import type { User } from "next-auth";
 
 
 export const QUERIES = {
@@ -38,7 +39,7 @@ export const QUERIES = {
             .offset(offset)
             .orderBy(desc(movies.createdAt));
     },
-    
+
     getSeries: async function ({ limit = 10, offset = 0 }: { limit?: number; offset?: number } = {}) {
         return await db.query.series.findMany({
             limit,
@@ -51,3 +52,23 @@ export const QUERIES = {
     },
 
 };
+
+export const MUTATIONS = {
+    updateUserEmail: async function (data: { email: string, user: User }) {
+        const userToUpdate = await db.query.users.findFirst({
+            where: eq(users.id, data.user.id!)
+        });
+        //console.log("userToUpdate: ", userToUpdate)
+        if (userToUpdate) {
+            const updatedUser = await db
+                .update(users)
+                .set({
+                    email: data.email
+                })
+                .where(eq(users.id, data.user.id!))
+                .returning();
+            console.log("updatedUser: ", updatedUser)
+            return updatedUser[0] as User
+        }
+    }
+}
