@@ -1,14 +1,52 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Wallet, LayoutDashboard, BarChart3, Globe, Home, ChevronDown, LifeBuoy, Settings } from "lucide-react";
+import {
+  Wallet,
+  LayoutDashboard,
+  BarChart3,
+  Globe,
+  Home,
+  ChevronDown,
+  LifeBuoy,
+  Settings,
+  Search,
+} from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { useState, useEffect } from "react";
 
 export default function DashboardLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return <div className="min-h-screen">
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+  return (
+    <div className="min-h-screen">
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandEmpty>No results found.</CommandEmpty>
+      </CommandDialog>
         <div className="min-h-screen ">
             <div className="grid lg:grid-cols-[280px_1fr]">
                 <aside className="border-r bg-background/50 backdrop-blur">
@@ -17,9 +55,11 @@ export default function DashboardLayout({
                         <span className="font-bold">Go Movies</span>
                     </div>
                     <div className="px-4 py-4">
-                        <Input placeholder="Search" className="bg-background/50" />
+                        <Button className="w-full justify-start gap-2" variant={"outline"}>
+                            <Search className="h-4 w-4" />
+                             Search
+                        </Button>
                     </div>
-                    <nav className="space-y-2 px-2">
                         <Button variant="ghost" className="w-full justify-start gap-2" asChild>
                             <Link href="/dashboard/movies">
                                 <LayoutDashboard className="h-4 w-4" />
@@ -63,10 +103,10 @@ export default function DashboardLayout({
                                 Settings
                             </Link>
                         </Button>
-                    </nav>
                 </aside>
                 {children}
             </div>
         </div>
     </div>
-}
+  );
+};
