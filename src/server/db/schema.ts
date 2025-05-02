@@ -70,6 +70,8 @@ export const movies = createTable("movie", (d) => ({
   platformReleaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   cast: d.text(),
   productionCompany: d.varchar({ length: 256 }),
+  season: d.varchar({length: 255}),
+  episode: d.integer(),
   serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }),
   createdAt: d
     .timestamp({ withTimezone: true })
