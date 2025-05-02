@@ -1,13 +1,25 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { movies, series, type DB_MovieType } from "../../src/server/db/schema";
+import { v5 as uuidv5 } from "uuid";
+
+export const UUID_NAMESPACE_APP = 'f47ac10b-58cc-4372-a567-0e02b2c3d479' as const;
+
+function generateUUIDv5ForApp(str: string): string {
+  return uuidv5(str, UUID_NAMESPACE_APP);
+}
+
+function generateUUIDv5ForDomain(str: string, namespace: string): string {
+  return uuidv5(str, namespace);
+}
 
 function slugify(str: string) {
   return str
     .toLowerCase()
     .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
     .replace(/\s+/g, "-") // collapse whitespace and replace by -
-    .replace(/-+/g, "-"); // collapse dashes
+    .replace(/-+/g, "-") // collapse dashes
+    .concat(Math.floor(Math.random() * 100000).toString().padStart(5, '0')); 
 }
 
 async function main() {
@@ -166,21 +178,21 @@ async function main() {
 
   const insertedSeries = await db.insert(series)
     .values([
-      { name: "Breaking Bad", description: "A high school chemistry teacher turned methamphetamine kingpin." },
-      { name: "Stranger Things", description: "A group of kids uncover supernatural mysteries in their town." },
-      { name: "The Witcher", description: "A monster hunter navigates a world filled with magic and war." },
-      { name: "Game of Thrones", description: "Noble families vie for control in a medieval fantasy world." },
-      { name: "The Mandalorian", description: "A lone bounty hunter travels the galaxy in search of his purpose." },
+      { title: "Breaking Bad", description: "A high school chemistry teacher turned methamphetamine kingpin." },
+      { title: "Stranger Things", description: "A group of kids uncover supernatural mysteries in their town." },
+      { title: "The Witcher", description: "A monster hunter navigates a world filled with magic and war." },
+      { title: "Game of Thrones", description: "Noble families vie for control in a medieval fantasy world." },
+      { title: "The Mandalorian", description: "A lone bounty hunter travels the galaxy in search of his purpose." },
     ])
-    .returning({ id: series.id, name: series.name });
+    .returning({ id: series.id, title: series.title });
 
   console.log("Inserted Series IDs:", insertedSeries);
 
   const episodesData = insertedSeries.flatMap((serie) => [
     {
       title: "Pilot",
-      description: `Introduction to ${serie.name}.`,
-      slug: slugify(`${serie.name} Pilot`),
+      description: `Introduction to ${serie.title}.`,
+      slug: slugify(`${serie.title} Pilot`),
       genre: "Drama",
       country: "USA",
       imdbRating: 8.0,
@@ -192,8 +204,8 @@ async function main() {
     },
     {
       title: "Episode 2",
-      description: `${serie.name} continues its story.`,
-      slug: slugify(`${serie.name} Episode 2`),
+      description: `${serie.title} continues its story.`,
+      slug: slugify(`${serie.title} Episode 2`),
       genre: "Drama",
       country: "USA",
       imdbRating: 8.3,
