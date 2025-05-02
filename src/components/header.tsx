@@ -14,6 +14,11 @@ export function Header() {
         <header className="bg-background p-4 flex items-center justify-between">
             <div className="flex items-center">
                 <TypographyH1 className="text-2xl font-bold mr-4 text-primary">{t("title")}</TypographyH1>
+                <Button variant="ghost" asChild>
+                    <Link href="/home">
+                        Home
+                    </Link>
+                </Button>
                 <Button asChild variant="ghost">
                     <Link href="/movie">
                         Movies

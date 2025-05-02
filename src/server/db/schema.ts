@@ -67,6 +67,7 @@ export const movies = createTable("movie", (d) => ({
   imdbRating: d.numeric().$type<number>(),
   duration: d.integer(),
   releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
+  platformReleaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   cast: d.text(),
   productionCompany: d.varchar({ length: 256 }),
   serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }),
@@ -80,6 +81,7 @@ export const movies = createTable("movie", (d) => ({
   index("movie_slug_idx").on(t.slug),
   index("movie_imdb_rating_idx").on(t.imdbRating),
   index("movie_release_date_idx").on(t.releaseDate),
+  index("movie_platform_release_date_idx").on(t.platformReleaseDate),
   index("movie_genre_idx").on(t.genre),
 ]));
 
