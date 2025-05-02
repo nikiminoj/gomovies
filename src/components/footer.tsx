@@ -1,5 +1,3 @@
-// Assuming the footer component is in src/components/footer.tsx
-
 import { Link } from "@/i18n/navigation";
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils'; // Assuming you have a utils file with cn for class merging
@@ -19,8 +17,6 @@ export function Footer() {
                 {t("footer.faq")}
               </Link>
             </li>
-            <li><Link href="/privacy" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.privacy")}</Link></li>
-            <li><Link href="/terms" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.termsOfUse")}</Link></li>
             <li><a href="#">{t("footer.account")}</a></li>
             <li><a href="#">{t("footer.mediaCenter")}</a></li>
           </ul>
@@ -33,8 +29,8 @@ export function Footer() {
               <li><a href="#">{t("footer.contactUs")}</a></li>
           </ul>
           <ul>
-            <li><a href="#">{t("footer.speedTest")}</a></li>
-            <li><a href="#">{t("footer.legalNotices")}</a></li>
+          <li><Link href="/privacy" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.privacy")}</Link></li>
+          <li><Link href="/terms" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.termsOfUse")}</Link></li>
           </ul>
         </div>
       </div>
