@@ -1,39 +1,39 @@
 "use client";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import MovieCard from "@/components/movie-card";
 import SerieCard from "@/components/series/serie-card";
 import { TypographyH3 } from "@/components/ui/typography";
-import { type DB_SerieType, type DB_MovieType, movies } from "@/server/db/schema";
+import { type DB_SerieType, type DB_MovieType } from "@/server/db/schema";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-export const TrendingMovies = ({ movies }: { movies: DB_SerieType[] }) => {
-    return <>
+export const TrendingMovies: FC<{ movies: DB_MovieType[] }> = ({ movies }) => {
+    return <div className="grid grid-cols-6 gap-4">
         {movies.map((movie) => {
             return <MovieCard key={movie.id} movie={movie} />
         })}
-    </>;
+    </div>;
 }
 
-export const TrendingSeries = ({ series }: { series: DB_SerieType[] }) => {
-    return <>
+export const TrendingSeries: FC<{ series: DB_SerieType[] }> = ({ series }) => {
+    return <div className="grid grid-cols-6 gap-4">
         {series.map((serie) => {
             return <SerieCard key={serie.id} serie={serie} />
         })}
-    </>;
+    </div>;
 }
 
-export default function Trending({ movies, series }: { movies: DB_MovieType[], series: DB_SerieType[] }) {
-    const [section, setSection] = useState<'movies' | 'series'>('movies');
+export default function Trending({ movies, series }: { movies: DB_MovieType[]; series: DB_SerieType[]; }) {
 
     return <>
-        <div className="flex flex-row items-center gap-4">
-            <TypographyH3>Trending</TypographyH3>
-            <div className="flex flex-row items-center gap-2">
-                <div onClick={() => setSection('movies')}>Movies</div>
-                <div onClick={() => setSection('series')}>Series</div>
-            </div>
-        </div>
-        <div className="grid grid-cols-6 gap-4">
-            {section === "movies" ? <TrendingMovies movies={movies} /> : <TrendingSeries series={series} />}
-        </div>
+        <TypographyH3>Trending</TypographyH3>
+        <Tabs defaultValue="movies">
+            <TabsList className="mb-4">
+                <TabsTrigger value="movies">Movies</TabsTrigger>
+                <TabsTrigger value="series">Series</TabsTrigger>
+            </TabsList>
+            <TabsContent value="movies"> <TrendingMovies movies={movies} /></TabsContent>
+            <TabsContent value="series"><TrendingSeries series={series} /></TabsContent>
+        </Tabs>
     </>
 }
