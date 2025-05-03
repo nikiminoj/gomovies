@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { index, pgTableCreator, primaryKey } from "drizzle-orm/pg-core";
+import { index, pgEnum, pgTableCreator, primaryKey, integer, serial } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth";
 
 /**
@@ -61,6 +61,7 @@ export const movies = createTable("movie", (d) => ({
   .$defaultFn(() => crypto.randomUUID()),
   title: d.varchar({ length: 256 }).notNull(),
   description: d.text(),
+  quality: d.varchar({ length: 256 }),
   slug: d.varchar({ length: 256 }).notNull().unique(),
   genre: d.varchar({ length: 100 }),
   country: d.varchar({ length: 100 }),
@@ -71,7 +72,7 @@ export const movies = createTable("movie", (d) => ({
   cast: d.text(),
   productionCompany: d.varchar({ length: 256 }),
   season: d.varchar({length: 255}),
-  episode: d.integer(),
+  episode: d.numeric().$type<number>(),
   serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }),
   createdAt: d
     .timestamp({ withTimezone: true })
@@ -176,6 +177,31 @@ export const verificationTokens = createTable(
   (t) => [primaryKey({ columns: [t.identifier, t.token] })],
 );
 
+export const itemTypeEnum = pgEnum('item_type', ['movie', 'serie']);
+
+export const userRatings = createTable(
+  'user_rating',
+  (d) => ({
+    id: d.varchar({ length: 255 }).notNull().primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: d
+      .varchar('user_id', { length: 255 })
+      .notNull()
+      .references(() => users.id),
+    itemId: d.varchar('item_id', { length: 255 }).notNull(),
+    type: itemTypeEnum('type').notNull(),
+    rating: integer('rating').notNull(),
+    createdAt: d
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: d.timestamp({ withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull().$onUpdate(() => new Date()),
+  }),
+  (t) => [
+    index("user_ratings_user_id_idx").on(t.userId),
+    index("user_ratings_item_id_idx").on(t.itemId),
+  ],
+);
+
 export type DB_NotificationType = typeof notifications.$inferSelect;
 export type DB_SerieType = typeof series.$inferSelect;
 export type DB_MovieType = typeof movies.$inferSelect;
@@ -183,6 +209,7 @@ export type DB_AccountType = typeof accounts.$inferSelect;
 export type DB_UserType = typeof users.$inferSelect;
 export type DB_SessionType = typeof sessions.$inferSelect;
 export type DB_VerificationTokenType = typeof verificationTokens.$inferSelect;
+export type DB_UserRatingType = typeof userRatings.$inferSelect;
 
 export const moviesRelations = relations(movies, ({ one }) => ({
   serie: one(series, { fields: [movies.serieId], references: [series.id] }),
@@ -194,6 +221,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  ratings: many(userRatings),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -202,4 +230,8 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 
 export const seriesRelations = relations(series, ({ many }) => ({
   movies: many(movies),
+}));
+
+export const userRatingsRelations = relations(userRatings, ({ one }) => ({
+  user: one(users, { fields: [userRatings.userId], references: [users.id] }),
 }));
