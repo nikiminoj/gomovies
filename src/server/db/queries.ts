@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "./index";
-import { movies, series, users } from "./schema";
-import { eq, isNull, count, isNotNull, asc, desc } from "drizzle-orm";
+import { movies, series, users, userRatings } from "./schema";
+import { eq, isNull, count, isNotNull, asc, desc, and } from "drizzle-orm";
 import type { User } from "next-auth";
 
 
@@ -69,6 +69,31 @@ export const MUTATIONS = {
                 .returning();
             console.log("updatedUser: ", updatedUser)
             return updatedUser[0] as User
+        }
+    },
+    rateItem: async function ({ user_id, item_id, type, rating }: { user_id: string, item_id: string, type: "movie" | "serie", rating: number }) {
+        const existingRating = await db.query.userRatings.findFirst({
+            where: and(
+                eq(userRatings.userId, user_id),
+                eq(userRatings.itemId, item_id),
+                eq(userRatings.type, type)
+            )
+        });
+
+        if (existingRating) {
+            const updatedRating = await db
+                .update(userRatings)
+                .set({ rating, updatedAt: new Date() })
+                .where(eq(userRatings.id, existingRating.id))
+                .returning();
+            return updatedRating[0];
+        } else {
+            const newRating = await db
+                .insert(userRatings)
+                .values({ userId: user_id, itemId: item_id, type, rating })
+                .returning();
+
+            return newRating[0];
         }
     }
 }
