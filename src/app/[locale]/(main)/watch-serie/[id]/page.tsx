@@ -9,9 +9,13 @@ export default async function WatchSeriePage({ params }: Readonly<{
     params: Promise<{ id: string }>
 }>) {
     const { id } = await params;
-    const my_movies = await db.select().from(movies).where(and(eq(movies.id, id), isNotNull(movies.serieId))).limit(1);
+    let my_movies, my_series;
+    my_movies = await db.select().from(movies).where(and(eq(movies.id, id), isNotNull(movies.serieId))).limit(1);
     if (my_movies === null || my_movies.length <= 0 || (my_movies.length > 0 && my_movies[0] === null)) {
-        return notFound();
+        my_series = await db.select().from(series).where(eq(series.id, id)).limit(1);
+        if (my_series === null || my_series.length <= 0 || (my_series.length > 0 && my_movies[0] === null)) {
+            return notFound();
+        }
     }
 
     const movie = my_movies[0];

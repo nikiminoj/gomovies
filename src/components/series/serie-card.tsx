@@ -7,7 +7,7 @@ interface SerieCardProps {
 
 const MovieCard: React.FC<SerieCardProps> = ({ serie }) => {
   return (
-    <Link href={`/watch-serie/${serie.id}`}>
+    <Link href={`/serie/${serie.id}`}>
       <div className="overflow-clip p-4">
         <div className="border rounded-lg h-56"></div>
         <div className="">
@@ -15,7 +15,7 @@ const MovieCard: React.FC<SerieCardProps> = ({ serie }) => {
           <div className="grid grid-cols-3">
             <div>{serie.releaseDate?.getFullYear()}</div>
             <div></div>
-            <div className="border text-center text-sm rounded text-neutral-500">{serie.serieId == null ? "Movie" : "Serie"}</div>
+            <div className="border text-center text-sm rounded text-neutral-500">Serie</div>
           </div>
         </div>
       </div>

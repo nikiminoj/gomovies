@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { unique, index, pgEnum, pgTableCreator, primaryKey, integer, serial } from "drizzle-orm/pg-core";
+import { unique, index, pgEnum, pgTableCreator, primaryKey, integer, serial, varchar, text, timestamp } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth";
 
 /**
@@ -14,10 +14,10 @@ export const posts = createTable(
   "post",
   (d) => ({
     id: d
-    .varchar({ length: 255 })
-    .notNull()
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+      .varchar({ length: 255 })
+      .notNull()
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
     name: d.varchar({ length: 256 }),
     createdById: d
       .varchar({ length: 255 })
@@ -37,18 +37,18 @@ export const posts = createTable(
 
 export const series = createTable("serie", (d) => ({
   id: d
-  .varchar({ length: 255 })
-  .notNull()
-  .primaryKey()
-  .$defaultFn(() => crypto.randomUUID()),
+    .varchar({ length: 255 })
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   title: d.varchar({ length: 255 }).notNull(),
   description: d.varchar({ length: 500 }),
   releaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   createdAt: d
-      .timestamp({ withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+    .timestamp({ withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: d.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
 }), (t) => ([
   index("serie_title_idx").on(t.title),
   index("serie_release_date_idx").on(t.releaseDate),
@@ -56,9 +56,9 @@ export const series = createTable("serie", (d) => ({
 
 export const movies = createTable("movie", (d) => ({
   id: d.varchar({ length: 255 })
-  .notNull()
-  .primaryKey()
-  .$defaultFn(() => crypto.randomUUID()),
+    .notNull()
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   title: d.varchar({ length: 256 }).notNull(),
   description: d.text(),
   quality: d.varchar({ length: 256 }),
@@ -71,9 +71,9 @@ export const movies = createTable("movie", (d) => ({
   platformReleaseDate: d.timestamp({ mode: "date", withTimezone: true }),
   cast: d.text(),
   productionCompany: d.varchar({ length: 256 }),
-  season: d.varchar({length: 255}),
+  season: d.varchar({ length: 255 }),
   episode: d.numeric().$type<number>(),
-  serieId: d.varchar({length: 255}).references(() => series.id, { onDelete: "cascade" }),
+  serieId: d.varchar({ length: 255 }).references(() => series.id, { onDelete: "cascade" }),
   createdAt: d
     .timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -96,7 +96,7 @@ export const users = createTable("user", (d) => ({
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: d.varchar({ length: 255 }),
-  role: d.varchar({length: 250}),
+  role: d.varchar({ length: 250 }),
   email: d.varchar({ length: 255 }).notNull(),
   emailVerified: d
     .timestamp({
@@ -198,11 +198,31 @@ export const ratings = createTable(
   }),
   (t) => [
     index("ratings_user_id_idx").on(t.userId),
-    index("ratings_item_id_and_type_idx").on(t.itemId,t.type),
+    index("ratings_item_id_and_type_idx").on(t.itemId, t.type),
     unique().on(t.userId, t.itemId, t.type)
   ],
 );
 
+export const contacts = createTable(
+  "contact",
+  (t) => ({
+    id: t.varchar({ length: 255 }).notNull().primaryKey().$defaultFn(() => crypto.randomUUID()),
+    name: varchar("name", { length: 255 }).notNull(),
+    email: varchar("email", { length: 255 }).notNull(),
+    message: text("message").notNull(),
+    readAt: t
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`),
+    createdAt: t
+      .timestamp({ withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: t.timestamp({ withTimezone: true }).$onUpdate(() => new Date()),
+  }),
+  (t) => [
+    index("contact_email_idx").on(t.email)
+  ]
+);
 export type DB_NotificationType = typeof notifications.$inferSelect;
 export type DB_SerieType = typeof series.$inferSelect;
 export type DB_MovieType = typeof movies.$inferSelect;
@@ -210,6 +230,7 @@ export type DB_AccountType = typeof accounts.$inferSelect;
 export type DB_UserType = typeof users.$inferSelect;
 export type DB_SessionType = typeof sessions.$inferSelect;
 export type DB_VerificationTokenType = typeof verificationTokens.$inferSelect;
+export type DB_ContactType = typeof contacts.$inferSelect;
 export type DB_UserRatingType = typeof ratings.$inferSelect;
 
 export const moviesRelations = relations(movies, ({ one }) => ({

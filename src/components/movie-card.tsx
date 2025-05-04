@@ -9,7 +9,7 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
-    <Link href={`/watch-movie/${movie.id}`}>
+    <Link href={`/movie/${movie.id}`}>
       <div className="overflow-clip p-4">
         <div className="border rounded-lg h-56"></div>
         <div className="">

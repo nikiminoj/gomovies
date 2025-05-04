@@ -23,7 +23,11 @@ export function Footer() {
           </ul>
           <ul>
             <li><a href="#">{t("footer.corporateInformation")}</a></li>
-            <li><a href="#">{t("footer.contactUs")}</a></li>
+            <li>
+              <Link href="/contact" className={cn("text-muted-foreground hover:text-foreground")}>
+                {t("footer.contactUs")}
+              </Link>
+            </li>
             <li><Link href="/privacy" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.privacy")}</Link></li>
             <li><Link href="/terms" className={cn("text-muted-foreground hover:text-foreground")}>{t("footer.termsOfUse")}</Link></li>
           </ul>

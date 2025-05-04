@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactStars from 'react-stars';
-import { useToast } from '@/components/ui/sonner';
+import { toast } from "sonner"
 import { useSession } from 'next-auth/react';
 
 interface SerieDetailsProps {
@@ -8,7 +8,6 @@ interface SerieDetailsProps {
 }
 
 export default function SerieDetails({ serieId }: SerieDetailsProps) {
-  const { toast } = useToast();
   const { data: session } = useSession();
   const [rating, setRating] = useState<number>(0);
 
