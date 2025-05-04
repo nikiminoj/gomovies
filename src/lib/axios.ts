@@ -6,7 +6,7 @@ axios.defaults.timeout = TIMEOUT;
 
 axios.defaults.baseURL = env.NEXT_PUBLIC_SERVER_API_URL;
 
-const setupAxiosInterceptors = (onUnauthenticated:()=> void) => {
+export const setupAxiosInterceptors = (onUnauthenticated:()=> void) => {
   const onRequestSuccess = (config: InternalAxiosRequestConfig) => {
     return config;
   };
@@ -21,4 +21,4 @@ const setupAxiosInterceptors = (onUnauthenticated:()=> void) => {
   axios.interceptors.response.use((response)=> response, onResponseError);
 };
 
-export default setupAxiosInterceptors;
+export default axios;
