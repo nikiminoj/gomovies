@@ -13,9 +13,19 @@ This application allows users to browse and discover a vast collection of movies
 
 ## Features
 
-*   ✅ **Browse Movies and series:** Explore an extensive catalog of movies and series.
-*   ✅ **Detailed Information:** View comprehensive information about each movie, including title, description, genre, cast, and more.
-*   ✅ **User Authentication:** (Planned) Unlock future features like creating watchlists and saving favorites.
+*   ✅  **Browse Movies and series:** Explore an extensive catalog of movies and series.
+*   ✅  **Detailed Information:** View comprehensive information about each movie, including title, description, genre, cast, and more.
+*   ✅  **Rate:** Rate movies and series.
+*   ✅  **Admin Panel:** Manage movies and series through an admin panel.
+*   🔄  **Recomendations:** Get movie and serie recommendations.
+*   ✅  **Search:** Search for movies and series by title.
+*   ✅  **Internationalization:** Available in English, Hindi, and Chinese.
+*   🔄  **User Authentication:** Authenticate to unlock future features.
+*   🔄  **Dashboard:** User dashboard to manage settings and notifications.
+
+
+
+*🔄 means it is in progress*
 
 ## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/laptop.svg" width="24" height="24" /> **Tech Stack**
 
