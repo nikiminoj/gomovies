@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { index, pgEnum, pgTableCreator, primaryKey, integer, serial } from "drizzle-orm/pg-core";
+import { unique, index, pgEnum, pgTableCreator, primaryKey, integer, serial } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth";
 
 /**
@@ -179,8 +179,8 @@ export const verificationTokens = createTable(
 
 export const itemTypeEnum = pgEnum('item_type', ['movie', 'serie']);
 
-export const userRatings = createTable(
-  'user_rating',
+export const ratings = createTable(
+  'rating',
   (d) => ({
     id: d.varchar({ length: 255 }).notNull().primaryKey().$defaultFn(() => crypto.randomUUID()),
     userId: d
@@ -197,8 +197,9 @@ export const userRatings = createTable(
     updatedAt: d.timestamp({ withTimezone: true }).default(sql`CURRENT_TIMESTAMP`).notNull().$onUpdate(() => new Date()),
   }),
   (t) => [
-    index("user_ratings_user_id_idx").on(t.userId),
-    index("user_ratings_item_id_idx").on(t.itemId),
+    index("ratings_user_id_idx").on(t.userId),
+    index("ratings_item_id_and_type_idx").on(t.itemId,t.type),
+    unique().on(t.userId, t.itemId, t.type)
   ],
 );
 
@@ -209,7 +210,7 @@ export type DB_AccountType = typeof accounts.$inferSelect;
 export type DB_UserType = typeof users.$inferSelect;
 export type DB_SessionType = typeof sessions.$inferSelect;
 export type DB_VerificationTokenType = typeof verificationTokens.$inferSelect;
-export type DB_UserRatingType = typeof userRatings.$inferSelect;
+export type DB_UserRatingType = typeof ratings.$inferSelect;
 
 export const moviesRelations = relations(movies, ({ one }) => ({
   serie: one(series, { fields: [movies.serieId], references: [series.id] }),
@@ -221,7 +222,7 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
-  ratings: many(userRatings),
+  ratings: many(ratings),
 }));
 
 export const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -232,6 +233,6 @@ export const seriesRelations = relations(series, ({ many }) => ({
   movies: many(movies),
 }));
 
-export const userRatingsRelations = relations(userRatings, ({ one }) => ({
-  user: one(users, { fields: [userRatings.userId], references: [users.id] }),
+export const userRatingsRelations = relations(ratings, ({ one }) => ({
+  user: one(users, { fields: [ratings.userId], references: [users.id] }),
 }));
