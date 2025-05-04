@@ -10,7 +10,7 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
-    title: "Movie Discovery",
+    title: "Go Movies",
     description: "Explore and discover your favorite movies",
     keywords: ["movies", "film", "cinema", "genre", "country"],
 };

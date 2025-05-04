@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { MovieTable } from "@/components/movie-table";
+import { MovieTable } from "@/components/admin/movie-table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { MovieForm } from "@/components/movie-form";
 

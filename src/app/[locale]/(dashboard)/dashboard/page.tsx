@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { MetricsCard } from "@/components/metrics-card"
 import { StatsChart } from "@/components/stats-chart"
-import { MovieTable } from "@/components/movie-table"
+import { MovieTable } from "@/components/admin/movie-table"
 import { BarChart3, ChevronDown, Globe, Home, LayoutDashboard, LifeBuoy, Settings, Wallet } from "lucide-react"
 import { db } from "@/server/db/index";
 import { QUERIES } from "@/server/db/queries"

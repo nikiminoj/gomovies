@@ -19,13 +19,21 @@ export default function HomePage() {
   const os = useOs();
   const router = useRouter();
   
-  const handleSearch = () => {
-    router.push(`/search/${searchTerm}`);
+  const handleSearch = (term:string) => {
+    if(term){
+      router.push(`/search/${term}`);
+    }
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+
+    if (!searchTerm) {
+      return;
+    }
+
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key === "k") {
         event.preventDefault();
@@ -40,6 +48,12 @@ export default function HomePage() {
     };
   });
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch(searchTerm);
+    }
+  };
+
   return (
     <>
       <main className="container mx-auto p-4 relative">
@@ -47,9 +61,9 @@ export default function HomePage() {
           <Input
             type="text"
             value={searchTerm}
-            onSubmit={handleSearch}
             placeholder={t("searchPlaceholder")}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
             ref={inputRef}
             className="mt-2 p-2 rounded w-full relative"
           />

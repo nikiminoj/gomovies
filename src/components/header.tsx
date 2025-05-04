@@ -3,7 +3,7 @@ import { Bell, User } from "lucide-react";
 import { signIn, signOut, useSession } from "next-auth/react"
 import { useTranslations } from "next-intl";
 import { Button } from "./ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { TypographyH1 } from "./ui/typography";
 
 export function Header() {
@@ -13,7 +13,7 @@ export function Header() {
     return (
         <header className="bg-background p-4 flex items-center justify-between">
             <div className="flex items-center">
-                <TypographyH1 className="text-2xl font-bold mr-4 text-primary">{t("title")}</TypographyH1>
+                <TypographyH1><Link href="/">{t("title")}</Link></TypographyH1>
                 <Button variant="ghost" asChild>
                     <Link href="/home">
                         Home

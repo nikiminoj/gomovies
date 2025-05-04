@@ -14,3 +14,8 @@ export function useOs() : "mac" | "windows" {
   }
   return 'windows';
 }
+
+
+export function max_or_min(a: number, b: number): number{
+  return a > b ? b : a;
+}

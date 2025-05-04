@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { TypographyH2, TypographyH4 } from '@/components/ui/typography';
+import * as motion from "motion/react-client";
 
 interface QuestionItem {
   question: string;
@@ -38,37 +39,43 @@ const FaqPage = () => {
   });
 
   return (
-    <div className="container mx-auto py-12">
-      <TypographyH4>
-        Frequently Asked Questions
-      </TypographyH4>
-      {isLoading ? (
-        <p>Loading FAQs...</p>
-      ) : error ? (
-        <p>Error: {error.message}</p>
-      ) : !faqs || faqs.length === 0 ? (
-        <p>No FAQs available at the moment.</p>
-      ) : (
-        <Accordion type="single" collapsible className="w-full">
-          {faqs.map((category, catIndex) => (
-            <div key={catIndex}>
-              <TypographyH4>{category.category}</TypographyH4>
-              {category.questions.map((faq, faqIndex) => (
-                <AccordionItem
-                  key={`${catIndex}-${faqIndex}`}
-                  value={`${catIndex}-${faqIndex}`}
-                >
-                  <AccordionTrigger>{faq.question}</AccordionTrigger>
-                  <AccordionContent>
-                    {faq.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </div>
-          ))}
-        </Accordion>
-      )}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="container mx-auto py-12">
+        <TypographyH4>
+          Frequently Asked Questions
+        </TypographyH4>
+        {isLoading ? (
+          <p>Loading FAQs...</p>
+        ) : error ? (
+          <p>Error: {error.message}</p>
+        ) : !faqs || faqs.length === 0 ? (
+          <p>No FAQs available at the moment.</p>
+        ) : (
+          <Accordion type="single" collapsible className="w-full">
+            {faqs.map((category, catIndex) => (
+              <div key={catIndex}>
+                <TypographyH4>{category.category}</TypographyH4>
+                {category.questions.map((faq, faqIndex) => (
+                  <AccordionItem
+                    key={`${catIndex}-${faqIndex}`}
+                    value={`${catIndex}-${faqIndex}`}
+                  >
+                    <AccordionTrigger>{faq.question}</AccordionTrigger>
+                    <AccordionContent>
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </div>
+            ))}
+          </Accordion>
+        )}
+      </div>
+    </motion.div>
   );
 };
 

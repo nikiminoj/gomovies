@@ -1,5 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { DB_MovieType } from "@/server/db/schema";
+import { TypographyP } from "./ui/typography";
 
 interface MovieCardProps {
   movie: DB_MovieType
@@ -7,15 +9,19 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{movie.title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>Release Date: {movie.releaseDate?.toString()}</CardDescription>
-        {movie.description && <p>{movie.description.substring(0, 100)}...</p>}
-      </CardContent>
-    </Card>
+    <Link href={`/watch-movie/${movie.id}`}>
+      <div className="overflow-clip p-4">
+        <div className="border rounded-lg h-56"></div>
+        <div className="">
+          <div className="font-medium text-nowrap text-ellipsis overflow-hidden">{movie.title}</div>
+          <div className="grid grid-cols-3">
+            <div>{movie.releaseDate?.getFullYear()}</div>
+            <div></div>
+            <div className="border text-center text-sm rounded text-neutral-500">{movie.serieId == null ? "Movie" : "Serie"}</div>
+          </div>
+        </div>
+      </div>
+    </Link >
   );
 };
 

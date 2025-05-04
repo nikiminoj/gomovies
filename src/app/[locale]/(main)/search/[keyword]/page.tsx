@@ -1,67 +1,59 @@
 import { db } from "@/server/db";
-import { movies } from "@/server/db/schema";
+import { movies, series } from "@/server/db/schema";
 import MovieCard from "@/components/movie-card";
 import { ilike, eq } from "drizzle-orm";
+import { TypographyH1 } from "@/components/ui/typography";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@radix-ui/react-accordion";
+import { Filter } from "lucide-react";
+import * as motion from "motion/react-client";
+
 interface Props {
   params: { keyword: string };
 }
 
-interface SearchResult {
-  id: number;
-  title: string;
-  description: string | null;
-  slug: string;
-  genre: string | null;
-  country: string | null;
-  imdbRating: number | null;
-  duration: number | null;
-  releaseDate: Date | null;
-  cast: string | null;
-  productionCompany: string | null;
-  createdAt: Date;
-  updatedAt: Date | null;
-}
-
 async function searchMovies(searchKeyword: string) {
-  const res = await db
-    .select({
-      id: movies.id,
-      title: movies.title,
-      description: movies.description,
-      // slug: movies.slug,
-      genre: movies.genre,
-      country: movies.country,
-      imdbRating: movies.imdbRating,
-      duration: movies.duration,
-      releaseDate: movies.releaseDate,
-      cast: movies.cast,
-      productionCompany: movies.productionCompany,
-      createdAt: movies.createdAt,
-      updatedAt: movies.updatedAt,
-    })
+  return await db
+    .select()
     .from(movies)
     .where(ilike(movies.title, `%${searchKeyword}%`))
-    .limit(50)
+    .limit(24)
     .offset(0);
-    return res.map(movie => ({
-      ...movie,
-      releaseDate: movie.releaseDate ? new Date(movie.releaseDate).toISOString().split('T')[0] : null,
-      createdAt: new Date(movie.createdAt).toISOString(),
-      updatedAt: movie.updatedAt ? new Date(movie.updatedAt).toISOString() : null
-    }));
 }
 export default async function SearchResultsPage({ params }: Props) {
   const { keyword } = params;
   const searchResults = await searchMovies(keyword);
 
   return (
-    <div>
-      <h1>Search results for: {keyword}</h1>
-      {searchResults.length === 0 ? (
-        <p>No movies found for this keyword.</p>
-      ) : (
-        searchResults.map((movie) => <MovieCard key={movie.id} movie={movie} />)
-      )}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <>
+
+        <div className="container mx-auto">
+          <Accordion type="single" collapsible>
+            <AccordionItem value="filter">
+              <AccordionTrigger>Filter
+              </AccordionTrigger>
+              <AccordionContent>
+                <Filter />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <div className="flex flex-row items-center justify-between">
+            <TypographyH1>Search results for: {decodeURIComponent(keyword)}</TypographyH1>
+          </div>
+
+        </div>
+        <div className="container mx-auto mt-10 max-w-6xl p-4">
+          {searchResults.length === 0 ? (
+            <p>No result found for this keyword.</p>
+          ) : (
+            searchResults.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+          )}
+        </div>
+      </>
+    </motion.div >
   );
 }

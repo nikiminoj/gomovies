@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { DB_SerieType } from "@/server/db/schema";
 
 interface SerieCardProps {
@@ -7,15 +7,19 @@ interface SerieCardProps {
 
 const MovieCard: React.FC<SerieCardProps> = ({ serie }) => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{serie.title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription>Release Date: {serie.releaseDate?.toString()}</CardDescription>
-        {serie.description && <p>{serie.description.substring(0, 100)}...</p>}
-      </CardContent>
-    </Card>
+    <Link href={`/watch-serie/${serie.id}`}>
+      <div className="overflow-clip p-4">
+        <div className="border rounded-lg h-56"></div>
+        <div className="">
+          <div className="font-medium text-nowrap text-ellipsis overflow-hidden">{serie.title}</div>
+          <div className="grid grid-cols-3">
+            <div>{serie.releaseDate?.getFullYear()}</div>
+            <div></div>
+            <div className="border text-center text-sm rounded text-neutral-500">{serie.serieId == null ? "Movie" : "Serie"}</div>
+          </div>
+        </div>
+      </div>
+    </Link >
   );
 };
 

@@ -26,7 +26,7 @@ const getRatingColor = (imdbRating: number | null) => {
 };
 
 const fetchMovies = async () => {
-    const response = await fetch('/api/movies');
+    const response = await fetch('/api/admin/movies');
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
