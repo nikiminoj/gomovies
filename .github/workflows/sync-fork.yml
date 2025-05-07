@@ -1,0 +1,16 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '* * * * *'  # Runs daily at midnight UTC
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Sync with upstream
+        run: |
+          git fetch upstream
+          git merge upstream/main
+          git push origin main
