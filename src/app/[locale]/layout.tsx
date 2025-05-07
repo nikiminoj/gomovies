@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { Geist } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
+import { Analytics } from "@vercel/analytics/react"
 import { routing } from '@/i18n/routing';
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
@@ -44,6 +45,7 @@ export default async function RootLayout({
                             <Toaster />
                         </QueryProvider>
                     </NextIntlClientProvider>
+                    <Analytics />
                 </body>
             </html>
         </SessionProvider>
