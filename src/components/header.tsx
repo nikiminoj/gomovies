@@ -13,7 +13,8 @@ export function Header() {
     return (
         <header className="bg-background p-4 flex items-center justify-between">
             <div className="flex items-center">
-                <TypographyH1><Link href="/">{t("title")}</Link></TypographyH1>
+                <TypographyH1 className="text-sm text-nowrap"><Link href="/">{t("title")}</Link></TypographyH1>
+                <div className="hidden md:block">
                 <Button variant="ghost" asChild>
                     <Link href="/home">
                         Home
@@ -29,6 +30,7 @@ export function Header() {
                         Series
                     </Link>
                 </Button>
+                </div>
             </div>
 
             <div className="flex items-center space-x-4">

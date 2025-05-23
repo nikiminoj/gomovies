@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const TrendingMovies: FC<{ movies: DB_MovieType[] }> = ({ movies }) => {
-    return <div className="grid grid-cols-6 gap-4">
+    return <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {movies.map((movie) => {
             return <MovieCard key={movie.id} movie={movie} />
         })}
@@ -16,7 +16,7 @@ export const TrendingMovies: FC<{ movies: DB_MovieType[] }> = ({ movies }) => {
 }
 
 export const TrendingSeries: FC<{ series: DB_SerieType[] }> = ({ series }) => {
-    return <div className="grid grid-cols-6 gap-4">
+    return <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
         {series.map((serie) => {
             return <SerieCard key={serie.id} serie={serie} />
         })}

@@ -56,7 +56,7 @@ export function MovieForm({ onSubmit }: MovieFormProps) {
     },
   });
 
-const countries = ["USA", "Canada", "France", "UK", "Germany", "Japan", "China", "South Korea", "India", "Brazil", "Mexico", "Italy", "Spain", "Australia", "Russia"];
+  const countries = ["USA", "Canada", "France", "UK", "Germany", "Japan", "China", "South Korea", "India", "Brazil", "Mexico", "Italy", "Spain", "Australia", "Russia"];
   return (
     <Form {...form}>
       <form
@@ -85,20 +85,35 @@ const countries = ["USA", "Canada", "France", "UK", "Germany", "Japan", "China",
               <FormControl><Textarea placeholder="Movie Description" {...field} /></FormControl>
               <FormMessage />
             </FormItem>)} />
-        <FormField
-          control={form.control}
-          name="genre"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Genre</FormLabel>
-              <FormControl>
-                <Input placeholder="Movie Genre" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-4 gap-4 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="genre"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Genre</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a genre" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Biography">Biography</SelectItem>
+                    <SelectItem value="Animation">Animation</SelectItem>
+                    <SelectItem value="Comedy">Comedy</SelectItem>
+                    <SelectItem value="Action">Action</SelectItem>
+                    <SelectItem value="Sci-Fi">Sci-Fi</SelectItem>
+                    <SelectItem value="Superhero">Superhero</SelectItem>
+                    <SelectItem value="Fantasy">Fantasy</SelectItem>
+                    <SelectItem value="Drama">Drama</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <FormMessage />
+              </FormItem>
+            )} />
           <FormField
             control={form.control}
             name="country"
@@ -113,21 +128,21 @@ const countries = ["USA", "Canada", "France", "UK", "Germany", "Japan", "China",
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                  <SelectItem value="USA">USA</SelectItem>
-                  <SelectItem value="Canada">Canada</SelectItem>
-                  <SelectItem value="France">France</SelectItem>
-                  <SelectItem value="UK">UK</SelectItem>
-                  <SelectItem value="Germany">Germany</SelectItem>
-                  <SelectItem value="Japan">Japan</SelectItem>
-                  <SelectItem value="China">China</SelectItem>
-                  <SelectItem value="South Korea">South Korea</SelectItem>
-                  <SelectItem value="India">India</SelectItem>
-                  <SelectItem value="Brazil">Brazil</SelectItem>
-                  <SelectItem value="Mexico">Mexico</SelectItem>
-                  <SelectItem value="Italy">Italy</SelectItem>
-                  <SelectItem value="Spain">Spain</SelectItem>
-                  <SelectItem value="Australia">Australia</SelectItem>
-                  <SelectItem value="Russia">Russia</SelectItem>
+                    <SelectItem value="USA">USA</SelectItem>
+                    <SelectItem value="Canada">Canada</SelectItem>
+                    <SelectItem value="France">France</SelectItem>
+                    <SelectItem value="UK">UK</SelectItem>
+                    <SelectItem value="Germany">Germany</SelectItem>
+                    <SelectItem value="Japan">Japan</SelectItem>
+                    <SelectItem value="China">China</SelectItem>
+                    <SelectItem value="South Korea">South Korea</SelectItem>
+                    <SelectItem value="India">India</SelectItem>
+                    <SelectItem value="Brazil">Brazil</SelectItem>
+                    <SelectItem value="Mexico">Mexico</SelectItem>
+                    <SelectItem value="Italy">Italy</SelectItem>
+                    <SelectItem value="Spain">Spain</SelectItem>
+                    <SelectItem value="Australia">Australia</SelectItem>
+                    <SelectItem value="Russia">Russia</SelectItem>
                   </SelectContent>
                 </Select>
 

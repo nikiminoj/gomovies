@@ -19,22 +19,22 @@ export default async function HomePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
     >
-        <div className="container mx-auto">
+        <div className="container mx-auto px-2 md:px-0">
             <Trending />
             <TypographyH3>Latest Movies</TypographyH3>
-            <div className="grid grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {latestMovies.map((movie) => {
                     return <MovieCard key={movie.id} movie={movie} />
                 })}
             </div>
             <TypographyH3>Latest Series</TypographyH3>
-            <div className="grid grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {latestSeries.map((serie) => {
                     return <SerieCard key={serie.id} serie={serie} />
                 })}
             </div>
             <TypographyH3>Coming soon</TypographyH3>
-            <div className="grid grid-cols-6 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {comingSoon.map((movie) => {
                     return <MovieCard key={movie.id} movie={movie} />
                 })}
