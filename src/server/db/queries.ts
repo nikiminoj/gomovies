@@ -1,6 +1,6 @@
 import "server-only";
 import { db } from "./index";
-import { movies, series, users, userRatings } from "./schema";
+import { movies, series, users, ratings } from "./schema";
 import { eq, isNull, count, isNotNull, asc, desc, and } from "drizzle-orm";
 import type { User } from "next-auth";
 
@@ -58,7 +58,6 @@ export const MUTATIONS = {
         const userToUpdate = await db.query.users.findFirst({
             where: eq(users.id, data.user.id!)
         });
-        //console.log("userToUpdate: ", userToUpdate)
         if (userToUpdate) {
             const updatedUser = await db
                 .update(users)

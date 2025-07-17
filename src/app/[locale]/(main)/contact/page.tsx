@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -30,8 +30,6 @@ const formSchema = z.object({
     message: "Message must be at least 10 characters.",
   }),
 });
-
-
 
 export default function ContactUsPage() {
   const form = useForm<z.infer<typeof formSchema>>({

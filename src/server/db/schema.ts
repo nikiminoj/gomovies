@@ -98,6 +98,8 @@ export const users = createTable("user", (d) => ({
   name: d.varchar({ length: 255 }),
   role: d.varchar({ length: 250 }),
   email: d.varchar({ length: 255 }).notNull(),
+  firstname: d.varchar({ length: 255 }),
+  lastname: d.varchar({ length: 255 }),
   emailVerified: d
     .timestamp({
       mode: "date",
